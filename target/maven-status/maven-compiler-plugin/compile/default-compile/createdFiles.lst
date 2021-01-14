@@ -1,0 +1,5 @@
+com\algaworks\socialbooks\repository\LivrosRepository.class
+com\algaworks\socialbooks\SocialbooksapiApplication.class
+com\algaworks\socialbooks\domain\Comentario.class
+com\algaworks\socialbooks\domain\Livro.class
+com\algaworks\socialbooks\resources\LivrosResources.class
