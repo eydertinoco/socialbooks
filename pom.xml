@@ -31,7 +31,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
@@ -42,38 +41,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-jpa</artifactId>
-            <version>2.4.2</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>jsr311-api</artifactId>
-            <version>1.1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet.jsp.jstl</groupId>
-            <artifactId>jstl-api</artifactId>
-            <version>1.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish</groupId>
-            <artifactId>javax.faces</artifactId>
-            <version>2.2.12</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jetty.orbit</groupId>
-            <artifactId>javax.servlet</artifactId>
-            <version>3.0.0.v201112011016</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.persistence</groupId>
-            <artifactId>javax.persistence-api</artifactId>
-            <version>2.2</version>
-        </dependency>
-
-
     </dependencies>
 
     <build>
