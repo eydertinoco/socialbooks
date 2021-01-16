@@ -3,10 +3,12 @@ package com.algaworks.socialbooks.domain;
 import com.fasterxml.jackson.annotation.JsonInclude; //@JsonInclude(JsonInclude.Include.NON_NULL)
 import com.fasterxml.jackson.annotation.JsonInclude.Include; //@JsonInclude(Include.NON_NULL)
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Transient;
 
-import javax.persistence.*;
-
-import javax.annotation.processing.Generated;
 import java.util.Date;
 import java.util.List;
 
