@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,21 +36,33 @@ public class LivrosResources {
     @RequestMapping(method = RequestMethod.POST)
     // Caso não tiver o @RequestMappinh na Classe, adicione value = "/livros" junto com Method.
     // Method vai informar que deseja criar uma nova informação.
-    public void salvar(@RequestBody Livro livro){
+    public ResponseEntity<Void> salvar(@RequestBody Livro livro){
+        // ResponseEntity para conseguir manipular a resposta, porém seu corpo é vazio. Sem retorno.
         // O RequestBody vai permitir que a informação seja salva no Banco de Dados
-        livrosRepository.save(livro);
+        livro = livrosRepository.save(livro);
+        // o livro é salvo com todas informações salva na variavel livro.
+
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(livro.getId()).toUri();
+        //Ele vai construir e expandir a URI usando a variavel livro.getId como base.
+
+        return ResponseEntity.created(uri).build();
+        // Utilizando o ResponseEntityu para criar a resposta correta.
+        // O created vai informar status correto (201 Created)
     }
 
-    // A função buscar vai ter o efeito de buscar um determinado livro em base no ID.
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    // o Value com {id} é um parametro que deseja a variavel indicada.
-    public Optional<Livro> buscar(@PathVariable("id") Long id) {
+    public ResponseEntity<?> buscar(@PathVariable("id") Long id) {
         //O PathVariable permite usar a variavel indicado no value e colocar a informação na função buscar.
-        return livrosRepository.findById(id);
-        // Está dando erro.
-        //public Livro buscar(@PathVariable("id") Long id){
-        //return livrosRepository.findOne(id);
-        //}
+
+        Optional<Livro> livro =livrosRepository.findById(id);
+
+        if (livro.equals(Optional.empty())){
+            return ResponseEntity.notFound().build();
+            //notFound indica que o id deseja não está sendo encontrando, retornando um erro 404.
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(livro);
+        // status(HttpStatus.OK) = Vai informar que é uma reposta de sucesso. 200 OK.
+        // O Body vai adicionar o livro na resposta.
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
