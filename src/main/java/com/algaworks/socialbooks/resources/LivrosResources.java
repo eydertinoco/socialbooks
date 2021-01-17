@@ -3,6 +3,8 @@ package com.algaworks.socialbooks.resources;
 import com.algaworks.socialbooks.domain.Livro;
 import com.algaworks.socialbooks.repository.LivrosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,6 +45,7 @@ public class LivrosResources {
     public Optional<Livro> buscar(@PathVariable("id") Long id) {
         //O PathVariable permite usar a variavel indicado no value e colocar a informação na função buscar.
         return livrosRepository.findById(id);
+        // Está dando erro.
         //public Livro buscar(@PathVariable("id") Long id){
         //return livrosRepository.findOne(id);
         //}
@@ -52,6 +55,14 @@ public class LivrosResources {
     // Metódo DELETE remove o recurso.
     public void deletar(@PathVariable("id") Long id){
         livrosRepository.deleteById(id);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    // Metódo PUT atualiza o recurso.
+    public void atualizar(@RequestBody Livro livro, @PathVariable("id") Long id){
+        livro.setId(id);
+        livrosRepository.save(livro);
+        // O save faz um MERGE entre as informações, atualizando a nova informação sobre a velha informação.
     }
 
 
