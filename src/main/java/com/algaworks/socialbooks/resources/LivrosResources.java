@@ -2,6 +2,8 @@ package com.algaworks.socialbooks.resources;
 
 import com.algaworks.socialbooks.domain.Livro;
 import com.algaworks.socialbooks.repository.LivrosRepository;
+import com.algaworks.socialbooks.services.LivrosService;
+import com.algaworks.socialbooks.services.exceptions.LivroNaoEncontradoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -24,7 +26,7 @@ import java.util.Optional;
 public class LivrosResources {
 
     @Autowired
-    private LivrosRepository livrosRepository;
+    private LivrosService livrosService;
 
     @RequestMapping(method = RequestMethod.GET)
     // Caso não tiver o @RequestMappinh na Classe, adicione value = "/livros" junto com Method.
@@ -32,7 +34,7 @@ public class LivrosResources {
     // Method vai informar que deseja utilizar o método GET (Adquirir informação).
     public ResponseEntity<List<Livro>> listar(){
         // Vamos fazer esse método listar alguns livros.
-        return ResponseEntity.status(HttpStatus.OK).body( livrosRepository.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(livrosService.listar());
     }
     @RequestMapping(method = RequestMethod.POST)
     // Caso não tiver o @RequestMappinh na Classe, adicione value = "/livros" junto com Method.
@@ -40,7 +42,7 @@ public class LivrosResources {
     public ResponseEntity<Void> salvar(@RequestBody Livro livro){
         // ResponseEntity para conseguir manipular a resposta, porém seu corpo é vazio. Sem retorno.
         // O RequestBody vai permitir que a informação seja salva no Banco de Dados
-        livro = livrosRepository.save(livro);
+        livro = livrosService.salvar(livro);
         // o livro é salvo com todas informações salva na variavel livro.
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(livro.getId()).toUri();
@@ -55,24 +57,26 @@ public class LivrosResources {
     public ResponseEntity<?> buscar(@PathVariable("id") Long id) {
         //O PathVariable permite usar a variavel indicado no value e colocar a informação na função buscar.
 
-        Optional<Livro> livro =livrosRepository.findById(id);
+        Optional<Livro> livro = null;
 
-        if (livro.equals(Optional.empty())){
+        try {
+            livro = livrosService.buscar(id);
+        } catch (LivroNaoEncontradoException e) {
             return ResponseEntity.notFound().build();
             //notFound indica que o id deseja não está sendo encontrando, retornando um erro 404.
         }
+
         return ResponseEntity.status(HttpStatus.OK).body(livro);
         // status(HttpStatus.OK) = Vai informar que é uma reposta de sucesso. 200 OK.
         // O Body vai adicionar o livro na resposta.
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    // Metódo DELETE remove o recurso.
     public ResponseEntity<Void> deletar(@PathVariable("id") Long id){
         try{
-            livrosRepository.deleteById(id);
+            livrosService.deletar(id);
             // Caso não encontre o ID, a exceção será lançada (catch)
-        } catch (EmptyResultDataAccessException e) {
+        } catch (LivroNaoEncontradoException e) {
             // Caso não exista o id selecionado, vai ter o tratamento informando ao usuário que a informação não foi
             // encontrada informando erro 404.
             return ResponseEntity.notFound().build();
@@ -85,8 +89,12 @@ public class LivrosResources {
     // Metódo PUT atualiza o recurso.
     public ResponseEntity<Void> atualizar(@RequestBody Livro livro, @PathVariable("id") Long id){
         livro.setId(id);
-        livrosRepository.save(livro);
-        // O save faz um MERGE entre as informações, atualizando a nova informação sobre a velha informação.
+        try {
+            livrosService.atualizar(livro);
+            // O atualizar faz um MERGE entre as informações, atualizando a nova informação sobre a velha informação.
+        } catch (LivroNaoEncontradoException e){
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.noContent().build();
     }
 
