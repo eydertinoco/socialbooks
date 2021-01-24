@@ -57,14 +57,7 @@ public class LivrosResources {
     public ResponseEntity<?> buscar(@PathVariable("id") Long id) {
         //O PathVariable permite usar a variavel indicado no value e colocar a informação na função buscar.
 
-        Optional<Livro> livro = null;
-
-        try {
-            livro = livrosService.buscar(id);
-        } catch (LivroNaoEncontradoException e) {
-            return ResponseEntity.notFound().build();
-            //notFound indica que o id deseja não está sendo encontrando, retornando um erro 404.
-        }
+        Optional<Livro> livro = livrosService.buscar(id);;
 
         return ResponseEntity.status(HttpStatus.OK).body(livro);
         // status(HttpStatus.OK) = Vai informar que é uma reposta de sucesso. 200 OK.
@@ -73,15 +66,7 @@ public class LivrosResources {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> deletar(@PathVariable("id") Long id){
-        try{
-            livrosService.deletar(id);
-            // Caso não encontre o ID, a exceção será lançada (catch)
-        } catch (LivroNaoEncontradoException e) {
-            // Caso não exista o id selecionado, vai ter o tratamento informando ao usuário que a informação não foi
-            // encontrada informando erro 404.
-            return ResponseEntity.notFound().build();
-        }
-        // Não há conteúdo nenhum para mostrar.
+        livrosService.deletar(id);
         return ResponseEntity.noContent().build();
     }
 
@@ -89,12 +74,7 @@ public class LivrosResources {
     // Metódo PUT atualiza o recurso.
     public ResponseEntity<Void> atualizar(@RequestBody Livro livro, @PathVariable("id") Long id){
         livro.setId(id);
-        try {
-            livrosService.atualizar(livro);
-            // O atualizar faz um MERGE entre as informações, atualizando a nova informação sobre a velha informação.
-        } catch (LivroNaoEncontradoException e){
-            return ResponseEntity.notFound().build();
-        }
+        livrosService.atualizar(livro);
         return ResponseEntity.noContent().build();
     }
 
