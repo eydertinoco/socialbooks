@@ -3,11 +3,7 @@ package com.algaworks.socialbooks.domain;
 import com.fasterxml.jackson.annotation.JsonInclude; //@JsonInclude(JsonInclude.Include.NON_NULL)
 import com.fasterxml.jackson.annotation.JsonInclude.Include; //@JsonInclude(Include.NON_NULL)
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import java.util.Date;
 import java.util.List;
@@ -30,7 +26,7 @@ public class Livro {
     @JsonInclude(Include.NON_NULL)
     private String resumo;
     @JsonInclude(Include.NON_NULL)
-    @Transient //Evita o JPA fazer comunicação entre Livro e Comentário.
+    @OneToMany(mappedBy = "livro")
     private List<Comentario> comentarios;
     @JsonInclude(Include.NON_NULL)
     private String autor;
