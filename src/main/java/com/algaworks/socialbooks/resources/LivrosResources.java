@@ -55,12 +55,14 @@ public class LivrosResources {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<?> buscar(@PathVariable("id") Long id) {
+    public ResponseEntity<Livro> buscar(@PathVariable("id") Long id) {
         //O PathVariable permite usar a variavel indicado no value e colocar a informação na função buscar.
 
-        Optional<Livro> livro = livrosService.buscar(id);;
+//        Optional<Livro> livro = livrosService.buscar(id);;
 
-        return ResponseEntity.status(HttpStatus.OK).body(livro);
+        return ResponseEntity.ok(livrosService.buscar(id));
+
+//        return ResponseEntity.status(HttpStatus.OK).body(livrosService.buscar(id));
         // status(HttpStatus.OK) = Vai informar que é uma reposta de sucesso. 200 OK.
         // O Body vai adicionar o livro na resposta.
     }
@@ -84,6 +86,15 @@ public class LivrosResources {
         livrosService.salvarComentario(livroId, comentario);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ResponseEntity.created(uri).build();
+    }
+
+    @RequestMapping(value = "/{id}/comentarios", method = RequestMethod.GET)
+    public ResponseEntity<List<Comentario>> listarComentartios
+            (@PathVariable("id") Long livroId) {
+
+        List<Comentario> comentarios = livrosService.listarComentarios(livroId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(comentarios);
     }
 
 }

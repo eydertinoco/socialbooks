@@ -26,13 +26,20 @@ public class LivrosService {
         return livrosRepository.findAll();
     }
 
-    public Optional<Livro> buscar(Long id){
-        Optional<Livro> livro =livrosRepository.findById(id);
+    public Livro buscar(Long id){
+        return this.livrosRepository
+                .findById(id)
+                .orElseThrow(() -> new LivroNaoEncontradoException(""));
 
-        if (livro.equals(Optional.empty())){
-            throw new LivroNaoEncontradoException("O livro não pode ser encontrado.");
-        }
-        return livro;
+
+
+
+//        Optional<Livro> livro =livrosRepository.findById(id);
+//
+//        if (livro.equals(Optional.empty())){
+//            throw new LivroNaoEncontradoException("O livro não pode ser encontrado.");
+//        }
+//        return livro;
     }
 
     public Livro salvar(Livro livro) {
@@ -64,6 +71,14 @@ public class LivrosService {
         comentario.setData(new Date());
 
         return comentariosRepository.save(comentario);
+    }
+
+    public List<Comentario> listarComentarios(Long livroId) {
+        Livro livro = buscar(livroId);
+
+
+
+        return livro.getComentarios();
     }
 
 }

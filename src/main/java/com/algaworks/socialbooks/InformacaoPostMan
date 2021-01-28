@@ -1,0 +1,18 @@
+POST LIVRO - http://localhost:8080/livros
+{
+    "nome" : "restaplicado",
+    "editora" : "AlgaWork",
+    "autor" : "Emilia"
+}
+{
+    "nome" : "restaplicado Teste azul",
+    "editora" : "AlgaWork",
+    "autor" : "PuckPack"
+}
+POST COMENTARIO - http://localhost:8080/livros/{id}/comentarios
+{
+    "texto" : "Muito bom!"
+}
+{
+    "texto" : "Quero mais livros!"
+}
