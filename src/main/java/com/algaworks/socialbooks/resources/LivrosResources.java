@@ -58,9 +58,9 @@ public class LivrosResources {
     public ResponseEntity<Livro> buscar(@PathVariable("id") Long id) {
         //O PathVariable permite usar a variavel indicado no value e colocar a informação na função buscar.
 
-//        Optional<Livro> livro = livrosService.buscar(id);;
-
         return ResponseEntity.ok(livrosService.buscar(id));
+
+//        Optional<Livro> livro = livrosService.buscar(id);;
 
 //        return ResponseEntity.status(HttpStatus.OK).body(livrosService.buscar(id));
         // status(HttpStatus.OK) = Vai informar que é uma reposta de sucesso. 200 OK.
