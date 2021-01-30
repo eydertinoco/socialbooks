@@ -29,10 +29,7 @@ public class LivrosService {
     public Livro buscar(Long id){
         return this.livrosRepository
                 .findById(id)
-                .orElseThrow(() -> new LivroNaoEncontradoException(""));
-
-
-
+                .orElseThrow(() -> new LivroNaoEncontradoException("O livro não pode ser encontrado."));
 
 //        Optional<Livro> livro =livrosRepository.findById(id);
 //
