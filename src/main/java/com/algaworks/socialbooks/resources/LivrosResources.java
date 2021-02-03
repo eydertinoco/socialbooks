@@ -8,6 +8,7 @@ import com.algaworks.socialbooks.services.exceptions.LivroNaoEncontradoException
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +31,9 @@ public class LivrosResources {
     @Autowired
     private LivrosService livrosService;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET,
+            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    //@MediaType é para indicar qual formato vau rodar o sistema.
     // Caso não tiver o @RequestMappinh na Classe, adicione value = "/livros" junto com Method.
     // Permite mapear uma URI para determinado método.
     // Method vai informar que deseja utilizar o método GET (Adquirir informação).

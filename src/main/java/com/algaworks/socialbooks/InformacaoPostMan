@@ -6,11 +6,6 @@ POST LIVRO - http://localhost:8080/livros
     "resumo" : "Esse é o resumo.",
     "autor" : {"id" : "1"}
 }
-{
-    "nome" : "restaplicado Teste azul",
-    "editora" : "AlgaWork",
-    "autor" : "PuckPack"
-}
 POST COMENTARIO - http://localhost:8080/livros/{id}/comentarios
 {
     "texto" : "Muito bom!"
@@ -20,7 +15,6 @@ POST COMENTARIO - http://localhost:8080/livros/{id}/comentarios
 }
 
 POST AUTOR - http://localhost:8080/autor
-
 {
     "nome" : "Eyder",
     "nascimento" : "17/05/1994",
