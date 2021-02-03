@@ -1,8 +1,10 @@
 POST LIVRO - http://localhost:8080/livros
 {
-    "nome" : "restaplicado",
+    "nome" : "Rest Aplicado",
+    "dataPublicacao" : "01/01/1016",
     "editora" : "AlgaWork",
-    "autor" : "Emilia"
+    "resumo" : "Esse é o resumo.",
+    "autor" : {"id" : "1"}
 }
 {
     "nome" : "restaplicado Teste azul",
@@ -15,4 +17,12 @@ POST COMENTARIO - http://localhost:8080/livros/{id}/comentarios
 }
 {
     "texto" : "Quero mais livros!"
+}
+
+POST AUTOR - http://localhost:8080/autor
+
+{
+    "nome" : "Eyder",
+    "nascimento" : "17/05/1994",
+    "nacionalidade" : "Brasileiro"
 }

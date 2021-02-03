@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -40,7 +41,7 @@ public class LivrosResources {
     @RequestMapping(method = RequestMethod.POST)
     // Caso não tiver o @RequestMappinh na Classe, adicione value = "/livros" junto com Method.
     // Method vai informar que deseja criar uma nova informação.
-    public ResponseEntity<Void> salvar(@RequestBody Livro livro){
+    public ResponseEntity<Void> salvar(@Valid @RequestBody Livro livro){
         // ResponseEntity para conseguir manipular a resposta, porém seu corpo é vazio. Sem retorno.
         // O RequestBody vai permitir que a informação seja salva no Banco de Dados
         livro = livrosService.salvar(livro);
