@@ -20,7 +20,7 @@ public class Comentario {
     @Size(max=1500, message = "O resumo não pode ter mais de 1500 caracteres.")
     @JsonProperty("comentario")
     private String texto;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+
     private String usuario;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonFormat(pattern = "dd/MM/yyyy")

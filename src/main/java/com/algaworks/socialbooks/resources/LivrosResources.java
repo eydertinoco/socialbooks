@@ -7,9 +7,12 @@ import com.algaworks.socialbooks.services.LivrosService;
 import com.algaworks.socialbooks.services.exceptions.LivroNaoEncontradoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,9 +21,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.CacheRequest;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 // Essa anotação é responsável que essa classe vai ser um Resources (Controller).
@@ -62,7 +67,10 @@ public class LivrosResources {
     public ResponseEntity<Livro> buscar(@PathVariable("id") Long id) {
         //O PathVariable permite usar a variavel indicado no value e colocar a informação na função buscar.
 
-        return ResponseEntity.ok(livrosService.buscar(id));
+        CacheControl cacheControl = CacheControl.maxAge(20, TimeUnit.SECONDS);
+
+        return ResponseEntity.status(HttpStatus.OK).cacheControl(cacheControl).body(livrosService.buscar(id));
+//        return ResponseEntity.ok(livrosService.buscar(id));
 
 //        Optional<Livro> livro = livrosService.buscar(id);;
 
@@ -87,6 +95,11 @@ public class LivrosResources {
 
     @RequestMapping(value = "/{id}/comentarios", method = RequestMethod.POST)
     public ResponseEntity<Void> adicionarComentario(@PathVariable("id") Long livroId, @RequestBody Comentario comentario){
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        comentario.setUsuario(auth.getName());
+
         livrosService.salvarComentario(livroId, comentario);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ResponseEntity.created(uri).build();
